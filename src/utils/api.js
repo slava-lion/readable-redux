@@ -9,8 +9,37 @@ const headers = {
   'Accept': 'application/json',
   'Authorization': token
 }
-
+// GETTERS
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })
     .then(res => res.json())
     .then(data => data.categories)
+
+export const getAllPosts = () =>
+  fetch(`${api}/posts`, { headers })
+    .then(res => res.json())
+
+export const getAllCommentsByPostId = (id) =>
+  fetch(`${api}/posts/${id}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data.categories)
+
+
+// CREATERS
+export const createNewPost = (body) =>
+    fetch(`${api}/posts`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(res => res.json())
+
+
+// EDITORS
+
+// DELETERS
+export const removePost = (post) =>
+  fetch(`${api}/posts/${post.id}`, { method: 'DELETE', headers })
+    .then(res => res.json())

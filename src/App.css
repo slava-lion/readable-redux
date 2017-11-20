@@ -3,21 +3,24 @@
 }
 
 #wrapper {
-    width: 1000px;
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-    display: inline-block;
-    overflow: hidden;
-    font-size: 30px;
+  width: 1000px;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 30px;
 }
 #categories {
-    width: 200px;
-    float:left;
-    text-align: left;
+  width: 20%;
+  float:left;
+  display: inline-block;
+  text-align: left;
 }
-#posts {
-    overflow: hidden;
+#posts,.categoryHeader {
+  width: 80%;
+  overflow: hidden;
+  display: inline-block;
 }
 
 a,a:visited,a:hover,a:active{
@@ -52,4 +55,54 @@ a.category-link:after{
 }
 .category-link2 {
   display: block;
+}
+
+.postInListDiv {
+  display: inline-block;
+  margin: 40px 20px 10px 20px;
+  border: 1px solid black;
+  line-height: 40px;
+  width: inherit;
+  border-radius: 0 10px 0 10px;
+}
+.postTitle{
+  border-bottom: 1px dashed black;
+  font-size: 0.8em;
+  margin: 5px;
+}
+.postBody{
+  border-bottom: 1px dashed black;
+  font-size: 0.5em;
+  text-align: left;
+  padding: 10px 5px 10px 5px;
+}
+.postBottom{
+  margin: 5px;
+}
+.postDetails{
+  display: inline-block;
+  float: left;
+  font-size: 0.5em;
+}
+.postVote{
+  display: inline-block;
+  float: right;
+  font-size: 0.5em;
+}
+.upVote,.downVote,.voteScore{
+  display: inline-block;
+  float: right;
+  width: 30px;
+  text-align: center;
+}
+.addNewPostdiv{
+  display: inline-block;
+  width: 220px;
+  float: left;
+  font-size: 0.8em;
+}
+.sortingNav{
+  display: inline-block;
+  float: right;
+  font-size: 0.8em;
 }
