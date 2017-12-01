@@ -29,9 +29,9 @@ export default function postReducer (state = initialPostState, action) {
         state
       }
     case UPDATE_POST_LIST :
-      return {
+      return [
         ...posts
-      }
+      ]
     default :
       return state
   }

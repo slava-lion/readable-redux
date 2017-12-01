@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { timeConverter } from '../utils/helpers.js'
+
+import * as API from '../utils/api.js'
 
 import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up'
 import FaThumbsODown from 'react-icons/lib/fa/thumbs-o-down'
@@ -11,10 +14,24 @@ import FaEdit from 'react-icons/lib/fa/edit'
 import FaPlus from 'react-icons/lib/fa/plus'
 import FaSort from 'react-icons/lib/fa/sort'
 
+import { updateCommentsForPost } from '../actions/commentsAction.js'
+
 class PostInList extends React.Component {
 
   state = {
-    value: ''
+    comments : []
+  }
+
+  showCommentsForThisPost = (postId) => {
+    API.getAllCommentsByPostId(postId).then( (comments) => {
+      console.log(JSON.stringify(comments));
+      this.props.updateCommentsForPost(comments);
+      /*comments.map((comment) => {
+        console.log(JSON.stringify(comments));
+      });*/
+      this.setState(() => ({ comments: comments }));
+      this.props.updateCommentsForPost(comments);
+    })
   }
 
   render() {
@@ -22,11 +39,14 @@ class PostInList extends React.Component {
 
     return (
       <div key={post.id} className="postInListDiv">
-        <div className="postTitle">{post.title}</div>
+        <div className="postTitle"><Link to={"/post/" + post.id}>{post.title}</Link></div>
         <div className="postBody">{post.body}</div>
         <div className="postBottom">
           <div className="postDetails">
             Creation time: {timeConverter(post.timestamp)}
+          </div>
+          <div className="commentsDetails">
+            <FaCommentingO onClick={() => this.showCommentsForThisPost(post.id)} size={25}/>
           </div>
           <div className="postVote">
             <div className="downVote">
@@ -45,6 +65,7 @@ class PostInList extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
    return {
+     updateCommentsForPost: (data) => dispatch(updateCommentsForPost(data)),
    };
 };
 

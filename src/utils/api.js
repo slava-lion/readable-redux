@@ -22,7 +22,6 @@ export const getAllPosts = () =>
 export const getAllCommentsByPostId = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
     .then(res => res.json())
-    .then(data => data.categories)
 
 
 // CREATERS

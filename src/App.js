@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Route, withRouter } from 'react-router-dom'
 import logo from './logo.svg';
 import './App.css';
 import * as API from './utils/api.js'
@@ -19,6 +19,7 @@ import { udpateCategoryList } from './actions/categoryAction.js'
 import { udpatePostsList } from './actions/postAction.js'
 
 import PostInList from './components/postInList.js'
+import DetailedPostPage from './components/detailedPostPage.js'
 
 class App extends Component {
   state ={
@@ -92,27 +93,33 @@ class App extends Component {
             ))}
 
           </div>
-          <div id="posts">
-            Posts <br/>
-            <div className="categoryHeader">
-              <div className="addNewPostdiv">
-                <FaPlus size={25} /> create new post
+          <Route exact path='/' render={() => (
+            <div id="posts">
+              Posts <br/>
+              <div className="categoryHeader">
+                <div className="addNewPostdiv">
+                  <FaPlus size={25} /> create new post
+                </div>
+                <div className="sortingNav">
+                  <FaSort size={25} />
+                  <select value="default" onChange={(event) => this.sort(event)}>
+                    <option value="default" disabled>default...</option>
+                    <option value="voteScoreAsc">voteScore asc</option>
+                    <option value="voteScoreDesc">voteScore desc</option>
+                    <option value="timestampAsc">timestamp asc</option>
+                    <option value="timestampDesc">timestamp desc</option>
+                  </select>
+                </div>
               </div>
-              <div className="sortingNav">
-                <FaSort size={25} />
-                <select value="default" onChange={(event) => this.sort(event)}>
-                  <option value="default" disabled>default...</option>
-                  <option value="voteScoreAsc">voteScore asc</option>
-                  <option value="voteScoreDesc">voteScore desc</option>
-                  <option value="timestampAsc">timestamp asc</option>
-                  <option value="timestampDesc">timestamp desc</option>
-                </select>
-              </div>
+              {this.props.posts.map((post) => (
+                <PostInList post={post} />
+              ))}
             </div>
-            {Object.values(this.props.posts).map((post) => (
-              <PostInList post={post} />
-            ))}
-          </div>
+          )}/>
+          <Route path='/post/:id' render={ props => (
+            <DetailedPostPage {...props} />
+          )} />
+
         </div>
       </div>
     );
@@ -133,7 +140,7 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(App)
+)(App))

@@ -106,3 +106,9 @@ a.category-link:after{
   float: right;
   font-size: 0.8em;
 }
+.commentsDetails{
+  display: inline-block;
+  float: inherit ;
+  width: 30px;
+  text-align: center;
+}

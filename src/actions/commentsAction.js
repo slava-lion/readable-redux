@@ -2,6 +2,7 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const GET_COMMENT_FOR_POST = 'GET_COMMENT_FOR_POST'
 
 export function addComment ({ id, timestamp = Date.now(), title, body, author, parentId }) {
   return {
@@ -35,5 +36,12 @@ export function deleteComment ({ id }) {
   return {
     type : DELETE_COMMENT,
     id
+  }
+}
+
+export function updateCommentsForPost (comments) {
+  return {
+    type : GET_COMMENT_FOR_POST,
+    comments
   }
 }
