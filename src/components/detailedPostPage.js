@@ -65,7 +65,7 @@ class DetailedPostPage extends React.Component {
             <div className="postBody">{post.body}</div>
             <div className="postBottom">
               <div className="postDetails">
-                Creation time: {timeConverter(post.timestamp)}
+                Creation time: {timeConverter(post.timestamp)} by <b>{post.author}</b>
               </div>
               <div className="commentsDetails">
                 {this.state.showComments && (
@@ -87,10 +87,23 @@ class DetailedPostPage extends React.Component {
             </div>
             <div>
               {this.state.showComments && (
-                <div>
-                  Comments:
+                <div className="detailedComments">
+                  <div>Comments:</div>
                   {this.state.comments.map((comment) => (
-                    console.log(comment)
+                    <div className="comment">
+                      <div className="commentBody">
+                        <b>{comment.author}</b> :  {comment.body}
+                      </div>
+                      <div className="postVote">
+                        <div className="downVote">
+                          <FaThumbsODown size={25}/>
+                        </div>
+                        <div className="voteScore"> {comment.voteScore} </div>
+                        <div className="upVote">
+                          <FaThumbsOUp size={25}/>
+                        </div>
+                      </div>
+                    </div>
                   ))}
 
                 </div>

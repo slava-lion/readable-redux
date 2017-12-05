@@ -94,6 +94,7 @@ a.category-link:after{
   float: right;
   width: 30px;
   text-align: center;
+  font-size: 15px;
 }
 .addNewPostdiv{
   display: inline-block;
@@ -108,7 +109,21 @@ a.category-link:after{
 }
 .commentsDetails{
   display: inline-block;
-  float: inherit ;
+  float: inherit;
   width: 30px;
   text-align: center;
+}
+.comment{
+  display: inline-block;
+  width: 100%;
+}
+.detailedComments{
+  display: inline;
+  float: inherit ;
+  font-size: 0.5em;
+  width: inherit;
+}
+.commentBody{
+  display: inline-block;
+  float: left;
 }
