@@ -14,9 +14,9 @@ export default function categoryReducer (state = initialCategoryState, action) {
         state
       }
     case UPDATE_CATEGORY_LIST :
-      return {
+      return [
         ...categoryList
-      }
+      ]
     default :
       return state
   }

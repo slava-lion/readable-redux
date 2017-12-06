@@ -46,6 +46,14 @@ class DetailedPostPage extends React.Component {
     })
   }
 
+  editPost = (postId) => {
+
+  }
+
+  deletePost = (postId) => {
+
+  }
+
   render() {
     // console.log(this.props)
     const {match} = this.props
@@ -61,7 +69,14 @@ class DetailedPostPage extends React.Component {
       return (
         <div id="posts">
           <div key={post.id} className="postInListDiv">
-            <div className="postTitle"><Link to={"/post/" + post.id}>{post.title}</Link></div>
+            <div className="postTitle">
+              <Link to={"/post/" + post.id}>{post.title}</Link>
+              <span style={{float: 'right'}}>
+                <FaEdit onClick={() => this.editPost(post.id)} size={25}/>
+                <FaClose onClick={() => this.deletePost(post.id)} size={25}/>
+              </span>
+
+            </div>
             <div className="postBody">{post.body}</div>
             <div className="postBottom">
               <div className="postDetails">

@@ -97,6 +97,7 @@ a.category-link:after{
   font-size: 15px;
 }
 .addNewPostdiv{
+  margin-top: 20px;
   display: inline-block;
   width: 220px;
   float: left;

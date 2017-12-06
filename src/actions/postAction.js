@@ -4,15 +4,10 @@ export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPDATE_POST_LIST = 'UPDATE_POST_LIST'
 
-export function addPost ({ id, timestamp = Date.now(), title, body, author, category }) {
+export function addPost (post) {
   return {
     type : ADD_POST,
-    id,
-    timestamp,
-    title,
-    body,
-    author,
-    category
+    post
   }
 }
 

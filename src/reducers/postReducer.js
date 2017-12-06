@@ -9,13 +9,13 @@ import {
 const initialPostState = []
 
 export default function postReducer (state = initialPostState, action) {
-  const { id, title, body, author, category, vote, posts } = action
+  const { id, title, body, author, category, vote, posts, post } = action
 
   switch (action.type) {
     case ADD_POST :
-      return {
-        state
-      }
+      return [
+        ...state, post
+      ]
     case VOTE_POST :
       return {
         state
