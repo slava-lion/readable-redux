@@ -29,7 +29,8 @@ class App extends Component {
     categoryTree : [],
     posts : [],
     editOrCreatePostOpen: false,
-    postForModal: null
+    postForModal: null,
+    sortOrder: 'default'
   }
 
   componentDidMount(){
@@ -64,7 +65,10 @@ class App extends Component {
   }
 
   sort = (event) => {
-    console.error("sorting");
+    const val = event.target.value
+    this.setState(() => ({
+      sortOrder: val
+    }))
   }
 
   createNewPost = (e) => {
@@ -121,6 +125,7 @@ class App extends Component {
 //      this.setState({categoryTree})
 //    })
     let date = new Date();
+    const sortOrderState = this.state.sortOrder
     const { editOrCreatePostOpen, postForModal } = this.state
 
     return (
@@ -147,7 +152,7 @@ class App extends Component {
                 </div>
                 <div className="sortingNav">
                   <FaSort size={25} />
-                  <select value="default" onChange={(event) => this.sort(event)}>
+                  <select value={this.state.sortOrder} onChange={(event) => this.sort(event)}>
                     <option value="default" disabled>default...</option>
                     <option value="voteScoreAsc">voteScore asc</option>
                     <option value="voteScoreDesc">voteScore desc</option>
@@ -156,7 +161,23 @@ class App extends Component {
                   </select>
                 </div>
               </div>
-              {this.props.posts.map((post) => (
+              {this.props.posts.sort(function(a, b) {
+                                    switch (sortOrderState) {
+                                      case 'default' :
+                                        return a.timestamp - b.timestamp
+                                      case 'voteScoreAsc' :
+                                        return a.voteScore - b.voteScore
+                                      case 'voteScoreDesc' :
+                                        return b.voteScore - a.voteScore
+                                      case 'timestampAsc' :
+                                        return a.timestamp - b.timestamp
+                                      case 'timestampDesc' :
+                                        return b.timestamp - a.timestamp
+                                      default :
+                                        return 0
+                                      }
+                                    })
+                                  .map((post) => (
                 <PostInList key={post.id} post={post} />
               ))}
             </div>
@@ -170,7 +191,7 @@ class App extends Component {
                 </div>
                 <div className="sortingNav">
                   <FaSort size={25} />
-                  <select value="default" onChange={(event) => this.sort(event)}>
+                  <select value={this.state.sortOrder} onChange={(event) => this.sort(event)}>
                     <option value="default" disabled>default...</option>
                     <option value="voteScoreAsc">voteScore asc</option>
                     <option value="voteScoreDesc">voteScore desc</option>
@@ -179,7 +200,24 @@ class App extends Component {
                   </select>
                 </div>
               </div>
-              {this.props.posts.filter((post) => (post.category === props.match.params.path)).map((post) => (
+              {this.props.posts.filter((post) => (post.category === props.match.params.path)).
+                                sort(function(a, b) {
+                                  switch (sortOrderState) {
+                                    case 'default' :
+                                      return a.timestamp - b.timestamp
+                                    case 'voteScoreAsc' :
+                                      return a.voteScore - b.voteScore
+                                    case 'voteScoreDesc' :
+                                      return b.voteScore - a.voteScore
+                                    case 'timestampAsc' :
+                                      return a.timestamp - b.timestamp
+                                    case 'timestampDesc' :
+                                      return b.timestamp - a.timestamp
+                                    default :
+                                      return 0
+                                    }
+                                  })
+                                .map((post) => (
                 <PostInList key={post.id} post={post} />
               ))}
             </div>
