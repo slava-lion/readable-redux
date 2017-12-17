@@ -15,13 +15,15 @@ import FaPlus from 'react-icons/lib/fa/plus'
 import FaSort from 'react-icons/lib/fa/sort'
 
 import { updateCommentsForPost } from '../actions/commentsAction.js'
+import ModalPostCreateOrEditView from './modalPostCreateOrEditView.js'
 
 class DetailedPostPage extends React.Component {
 
   state = {
-    postId : null,
+    post : null,
     comments : [],
-    showComments : true
+    showComments : true,
+    isOpenEditView : false,
   }
 
   showCommentsForThisPost = (postId) => {
@@ -32,10 +34,10 @@ class DetailedPostPage extends React.Component {
     this.setState(() => ({ showComments: false }));
   }
 
-  setPostIdAndGetComments = (postId) => {
-    if(this.state.postId !== postId) {
-      this.setState(() => ({ postId: postId }))
-      this.getComments(postId)
+  setPostIdAndGetComments = (post) => {
+    if(typeof post !== "undefined" && (this.state.post === null || this.state.post.id !== post.id)) {
+      this.setState(() => ({ post: post }))
+      this.getComments(post.id)
     }
   }
 
@@ -46,34 +48,45 @@ class DetailedPostPage extends React.Component {
     })
   }
 
-  editPost = (postId) => {
-
+  editPost = (post) => {
+    this.setState(() => ({ isOpenEditView: true }));
+  }
+  closePostModal = () => {
+    this.setState(() => ({ isOpenEditView: false }));
   }
 
   deletePost = (postId) => {
 
   }
 
+  componentWillMount() {
+      const {match} = this.props
+      const post = this.props.posts.find((p) => (p.id === match.params.id))
+
+      this.setPostIdAndGetComments(post)
+    }
+
+  componentWillReceiveProps(nextProps) {
+    const post = nextProps.posts.find((p) => (p.id === nextProps.match.params.id))
+    this.setPostIdAndGetComments(post)
+  }
+
   render() {
     // console.log(this.props)
-    const {match} = this.props
-
-    const post = this.props.posts.find((p) => (p.id === match.params.id))
-    if (typeof post === "undefined") {
+    const post = this.state.post
+    if (post === null) {
       return (
         <div>post with such id was not found</div>
       )
     } else {
-      this.setPostIdAndGetComments(post.id)
-
       return (
         <div id="posts">
           <div key={post.id} className="postInListDiv">
             <div className="postTitle">
               <Link to={"/post/" + post.id}>{post.title}</Link>
               <span style={{float: 'right'}}>
-                <FaEdit onClick={() => this.editPost(post.id)} size={25}/>
-                <FaClose onClick={() => this.deletePost(post.id)} size={25}/>
+                <FaEdit onClick={() => this.editPost(post)} size={25}/>
+                <FaClose onClick={() => this.deletePost(post)} size={25}/>
               </span>
 
             </div>
@@ -105,7 +118,7 @@ class DetailedPostPage extends React.Component {
                 <div className="detailedComments">
                   <div>Comments:</div>
                   {this.state.comments.map((comment) => (
-                    <div className="comment">
+                    <div key={comment.id} className="comment">
                       <div className="commentBody">
                         <b>{comment.author}</b> :  {comment.body}
                       </div>
@@ -125,6 +138,11 @@ class DetailedPostPage extends React.Component {
               )}
             </div>
           </div>
+
+          <ModalPostCreateOrEditView
+              isOpen={this.state.isOpenEditView}
+              onCloseFunction={this.closePostModal}
+              post={this.state.post} />
         </div>
       )
     }

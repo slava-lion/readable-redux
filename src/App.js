@@ -60,6 +60,10 @@ class App extends Component {
   fetchStartPosts() {
     API.getAllPosts().then( (posts) => {
         this.props.udpatePostsList({posts: posts})
+        this.setState(() => ({
+          post_populated : true,
+          posts: posts
+        }))
       }
     )
   }
@@ -130,8 +134,10 @@ class App extends Component {
 
     return (
       <div className="App">
+        <Link key={'home'} to={"/"}>home</Link>
         <div id="wrapper">
           <div id="categories">
+
             Categories
 
             <hr/>
@@ -262,7 +268,7 @@ class App extends Component {
                   type='text'
                   placeholder='text of the post'
                   ref={(textarea) => this.postBodyTextarea = textarea}
-                />
+                /><br />
                 <button
                   className=''
                   onClick={this.createNewPost}>Save

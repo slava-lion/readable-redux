@@ -19,18 +19,19 @@ export function votePost ({ id, vote }) {
   }
 }
 
-export function editPost ({ id, title, body }) {
+export function editPost (id, title, body) {
   return {
     type : EDIT_POST,
+    id,
     title,
     body
   }
 }
 
-export function deletePost ({ id }) {
+export function deletePost (post) {
   return {
     type : DELETE_POST,
-    id
+    post
   }
 }
 

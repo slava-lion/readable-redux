@@ -37,6 +37,18 @@ export const createNewPost = (body) =>
 
 
 // EDITORS
+export const updatePost = (id, title, body) =>
+    fetch(`${api}/posts/${id}`, {
+      method: 'PUT',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: {
+        title : title,
+        body : body
+      }
+    })
 
 // DELETERS
 export const removePost = (post) =>

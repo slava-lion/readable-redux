@@ -21,8 +21,11 @@ export default function postReducer (state = initialPostState, action) {
         state
       }
     case EDIT_POST :
-      return {
-        state
+      {
+        let newState = [...state]
+        newState.filter((p) => (p.id === id))
+             .map((p) => {p.title = title; p.body = body; })
+        return newState
       }
     case DELETE_POST :
       return {
