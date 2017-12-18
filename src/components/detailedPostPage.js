@@ -59,6 +59,12 @@ class DetailedPostPage extends React.Component {
 
   }
 
+  vote = (id, voteType) => {
+    API.vote(id, voteType).then( (post) => {
+      console.log('voted ' + post)
+    })
+  }
+
   componentWillMount() {
       const {match} = this.props
       const post = this.props.posts.find((p) => (p.id === match.params.id))
@@ -105,11 +111,11 @@ class DetailedPostPage extends React.Component {
               </div>
               <div className="postVote">
                 <div className="downVote">
-                  <FaThumbsODown size={25}/>
+                  <FaThumbsODown onClick={() => this.vote(post.id, 'downVote')} size={25}/>
                 </div>
                 <div className="voteScore"> {post.voteScore} </div>
                 <div className="upVote">
-                  <FaThumbsOUp size={25}/>
+                  <FaThumbsOUp onClick={() => this.vote(post.id, 'upVote')} size={25}/>
                 </div>
               </div>
             </div>

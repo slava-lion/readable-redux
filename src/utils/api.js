@@ -45,10 +45,21 @@ export const updatePost = (id, title, body) =>
         'Content-Type': 'application/json'
       },
       body: {
-        title : title,
-        body : body
+        'title': title,
+        'body': body
       }
     })
+
+export const vote = (id, voteType) =>
+  fetch(`${api}/posts/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    'option' : voteType
+  }).then(res => res.json())
+
 
 // DELETERS
 export const removePost = (post) =>
