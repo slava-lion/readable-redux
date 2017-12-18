@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { timeConverter } from '../utils/helpers.js'
 
 import * as API from '../utils/api.js'
@@ -15,6 +15,7 @@ import FaPlus from 'react-icons/lib/fa/plus'
 import FaSort from 'react-icons/lib/fa/sort'
 
 import { updateCommentsForPost } from '../actions/commentsAction.js'
+import { votePost, deletePost } from '../actions/postAction.js'
 import ModalPostCreateOrEditView from './modalPostCreateOrEditView.js'
 
 class DetailedPostPage extends React.Component {
@@ -55,13 +56,16 @@ class DetailedPostPage extends React.Component {
     this.setState(() => ({ isOpenEditView: false }));
   }
 
-  deletePost = (postId) => {
-
-  }
-
   vote = (id, voteType) => {
     API.vote(id, voteType).then( (post) => {
-      console.log('voted ' + post)
+      this.props.votePost(post)
+    })
+  }
+
+  removePost = (id) => {
+    API.removePost(id).then( (post) => {
+      this.props.deletePost(post)
+      this.props.history.push('/');
     })
   }
 
@@ -92,7 +96,7 @@ class DetailedPostPage extends React.Component {
               <Link to={"/post/" + post.id}>{post.title}</Link>
               <span style={{float: 'right'}}>
                 <FaEdit onClick={() => this.editPost(post)} size={25}/>
-                <FaClose onClick={() => this.deletePost(post)} size={25}/>
+                <FaClose onClick={() => this.removePost(post.id)} size={25}/>
               </span>
 
             </div>
@@ -158,6 +162,8 @@ class DetailedPostPage extends React.Component {
 const mapDispatchToProps = (dispatch) => {
    return {
      updateCommentsForPost: (data) => dispatch(updateCommentsForPost(data)),
+     votePost: (data) => dispatch(votePost(data)),
+     deletePost: (data) => dispatch(deletePost(data)),
    };
 };
 
@@ -168,4 +174,4 @@ const mapStateToProps = (state) => {
    };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailedPostPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailedPostPage));

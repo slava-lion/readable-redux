@@ -64,6 +64,6 @@ export const vote = (id, voteType) =>
 
 
 // DELETERS
-export const removePost = (post) =>
-  fetch(`${api}/posts/${post.id}`, { method: 'DELETE', headers })
+export const removePost = (id) =>
+  fetch(`${api}/posts/${id}`, { method: 'DELETE', headers })
     .then(res => res.json())

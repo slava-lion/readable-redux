@@ -11,11 +11,10 @@ export function addPost (post) {
   }
 }
 
-export function votePost ({ id, vote }) {
+export function votePost (post) {
   return {
     type : VOTE_POST,
-    id,
-    vote
+    post
   }
 }
 
