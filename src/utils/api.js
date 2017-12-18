@@ -44,10 +44,10 @@ export const updatePost = (id, title, body) =>
         ...headers,
         'Content-Type': 'application/json'
       },
-      body: {
+      body: JSON.stringify({
         'title': title,
         'body': body
-      }
+      })
     })
 
 export const vote = (id, voteType) =>
@@ -57,7 +57,9 @@ export const vote = (id, voteType) =>
       ...headers,
       'Content-Type': 'application/json'
     },
-    'option' : voteType
+    body: JSON.stringify({
+      option : voteType
+    })
   }).then(res => res.json())
 
 
