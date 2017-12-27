@@ -35,6 +35,15 @@ export const createNewPost = (body) =>
       body: JSON.stringify(body)
     }).then(res => res.json())
 
+export const addComment = (body) =>
+    fetch(`${api}/comments`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(res => res.json())
 
 // EDITORS
 export const updatePost = (id, title, body) =>
@@ -47,6 +56,19 @@ export const updatePost = (id, title, body) =>
       body: JSON.stringify({
         'title': title,
         'body': body
+      })
+    })
+
+export const editComment = (comment) =>
+    fetch(`${api}/comments/${comment.id}`, {
+      method: 'PUT',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'timestamp': comment.timestamp,
+        'body': comment.body
       })
     })
 
@@ -66,4 +88,8 @@ export const vote = (id, voteType) =>
 // DELETERS
 export const removePost = (id) =>
   fetch(`${api}/posts/${id}`, { method: 'DELETE', headers })
+    .then(res => res.json())
+
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, { method: 'DELETE', headers })
     .then(res => res.json())

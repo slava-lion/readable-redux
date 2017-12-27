@@ -9,30 +9,33 @@ import {
 const initialCommentState = []
 
 export default function commentReducer (state = initialCommentState, action) {
-  const { id, title, body, author, parentId, vote, comments } = action
+  const { id, title, body, author, timestamp, parentId, vote, comment, comments } = action
 
   switch (action.type) {
     case ADD_COMMENT :
-      return {
-        state
-      }
+      return [
+        ...state, comment
+      ]
     case VOTE_COMMENT :
       return {
         state
       }
     case EDIT_COMMENT :
-      return {
-        state
+      {
+        let newState = [...state]
+        newState.filter((c) => (c.id === id))
+                .map((c) => { c.timestamp = timestamp; c.body = body; })
+        return newState
       }
     case DELETE_COMMENT :
-      return {
-        state
-      }
+      return [
+        ...state
+      ].filter((c) => (c.id !== id))
     case GET_COMMENT_FOR_POST :
-      return {
+      return [
         ...state,
         ...comments
-      }
+      ]
     default :
       return state
   }

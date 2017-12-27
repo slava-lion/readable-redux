@@ -4,15 +4,10 @@ export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const GET_COMMENT_FOR_POST = 'GET_COMMENT_FOR_POST'
 
-export function addComment ({ id, timestamp = Date.now(), title, body, author, parentId }) {
+export function addComment (comment) {
   return {
     type : ADD_COMMENT,
-    id,
-    timestamp,
-    title,
-    body,
-    author,
-    parentId
+    comment
   }
 }
 
@@ -32,7 +27,7 @@ export function editComment ({ id, timestamp = Date.now(), body }) {
   }
 }
 
-export function deleteComment ({ id }) {
+export function deleteComment (id) {
   return {
     type : DELETE_COMMENT,
     id
