@@ -22,18 +22,6 @@ class PostInList extends React.Component {
     comments : []
   }
 
-  showCommentsForThisPost = (postId) => {
-    API.getAllCommentsByPostId(postId).then( (comments) => {
-      console.log(JSON.stringify(comments));
-      this.props.updateCommentsForPost(comments);
-      /*comments.map((comment) => {
-        console.log(JSON.stringify(comments));
-      });*/
-      this.setState(() => ({ comments: comments }));
-      this.props.updateCommentsForPost(comments);
-    })
-  }
-
   render() {
     const { post } = this.props
 
@@ -46,12 +34,9 @@ class PostInList extends React.Component {
             Creation time: {timeConverter(post.timestamp)}
           </div>
           <div className="commentsDetails">
-            <FaCommentingO onClick={() => this.showCommentsForThisPost(post.id)} size={25}/>
+            <FaCommentingO size={25}/> ({post.commentCount})
           </div>
           <div className="postVote">
-            <div className="downVote">
-              <FaThumbsODown size={25}/>
-            </div>
             <div className="voteScore"> {post.voteScore} </div>
             <div className="upVote">
               <FaThumbsOUp size={25}/>

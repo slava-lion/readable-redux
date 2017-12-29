@@ -14,8 +14,8 @@ import FaEdit from 'react-icons/lib/fa/edit'
 import FaPlus from 'react-icons/lib/fa/plus'
 import FaSort from 'react-icons/lib/fa/sort'
 
-import { updateCommentsForPost, addComment, deleteComment, editComment } from '../actions/commentsAction.js'
-import { votePost, deletePost } from '../actions/postAction.js'
+import { updateCommentsForPost, addComment, deleteComment, editComment, voteComment } from '../actions/commentsAction.js'
+import { votePost, deletePost, increaseCommentNumberForPost, decreaseCommentNumberForPost } from '../actions/postAction.js'
 import ModalPostCreateOrEditView from './modalPostCreateOrEditView.js'
 
 class DetailedPostPage extends React.Component {
@@ -40,7 +40,7 @@ class DetailedPostPage extends React.Component {
     if(typeof post !== "undefined" && (this.state.post === null || this.state.post.id !== post.id)) {
       this.setState(() => ({
         post: post,
-        comments: this.props.comments.filter((c) => (c.parentId = post.id))
+        comments: []
       }))
       this.getComments(post.id)
     }
@@ -63,6 +63,22 @@ class DetailedPostPage extends React.Component {
   vote = (id, voteType) => {
     API.vote(id, voteType).then( (post) => {
       this.props.votePost(post)
+    })
+  }
+
+  voteComment = (comment, voteType) => {
+    API.voteComment(comment.id, voteType).then( (comment) => {
+      this.props.voteComment(comment)
+      let comments = this.state.comments
+/*      comments.filter((c) => (c.id === comment.id)).map((c) => {
+        if(voteType === 'downVote') {
+          c.voteScore = c.voteScore - 1
+        }
+        if(voteType === 'upVote') {
+          c.voteScore = c.voteScore + 1
+        }
+      })
+      this.setState(() => ({ comments: comments })); */
     })
   }
 
@@ -90,6 +106,7 @@ class DetailedPostPage extends React.Component {
 
     API.addComment(newComment).then((comment) => {
       this.props.addComment(comment)
+      this.props.increaseCommentNumberForPost(this.state.post)
       this.setState(() => ({ comments: [...this.state.comments, comment] }))
       this.newCommentPostBodyTextarea.value = ''
       this.newCommentAuthorInput.value = ''
@@ -99,6 +116,7 @@ class DetailedPostPage extends React.Component {
   deleteComment = (id) => {
     API.deleteComment(id).then((comment) => {
       this.props.deleteComment(id)
+      this.props.decreaseCommentNumberForPost(this.state.post)
       this.setState(() => ({ comments: [...this.props.comments].filter((c) => (c.id !== id)) }))
     })
   }
@@ -173,6 +191,7 @@ class DetailedPostPage extends React.Component {
                 {!this.state.showComments &&
                   <FaCommentingO onClick={() => this.showCommentsForThisPost(post.id)} size={25}/>
                 }
+                ({post.commentCount})
               </div>
               <div className="postVote">
                 <div className="downVote">
@@ -188,7 +207,7 @@ class DetailedPostPage extends React.Component {
               {this.state.showComments && (
                 <div className="detailedComments">
                   <div>Comments:</div>
-                  {this.props.comments.length > 0 && this.props.comments.map((comment) => (
+                  {this.state.comments.length > 0 && this.state.comments.map((comment) => (
                     <div key={comment.id} className="comment">
                         {(this.state.edittedComment === null ||
                           this.state.edittedComment.id !== comment.id) && (
@@ -202,11 +221,11 @@ class DetailedPostPage extends React.Component {
                                 <FaClose onClick={() => this.deleteComment(comment.id)} size={25}/>
                               </span>
                               <div className="downVote">
-                                <FaThumbsODown size={25}/>
+                                <FaThumbsODown onClick={() => this.voteComment(comment, 'downVote')} size={25}/>
                               </div>
                               <div className="voteScore"> {comment.voteScore} </div>
                               <div className="upVote">
-                                <FaThumbsOUp size={25}/>
+                                <FaThumbsOUp onClick={() => this.voteComment(comment, 'upVote')} size={25}/>
                               </div>
                             </div>
                           </div>
@@ -273,7 +292,10 @@ const mapDispatchToProps = (dispatch) => {
      deletePost: (data) => dispatch(deletePost(data)),
      addComment: (data) => dispatch(addComment(data)),
      deleteComment: (data) => dispatch(deleteComment(data)),
-     editComment: (id, timestamp, body) => dispatch(editComment(id, timestamp, body))
+     editComment: (id, timestamp, body) => dispatch(editComment(id, timestamp, body)),
+     increaseCommentNumberForPost: (post) => dispatch(increaseCommentNumberForPost(post)),
+     decreaseCommentNumberForPost: (post) => dispatch(decreaseCommentNumberForPost(post)),
+     voteComment: (comment) => dispatch(voteComment(comment))
    };
 };
 

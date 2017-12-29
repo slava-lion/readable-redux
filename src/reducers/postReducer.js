@@ -3,7 +3,9 @@ import {
   VOTE_POST,
   EDIT_POST,
   DELETE_POST,
-  UPDATE_POST_LIST
+  UPDATE_POST_LIST,
+  INCREASE_COMMENT_NUMBER_FOR_POST,
+  DECREASE_COMMENT_NUMBER_FOR_POST
 } from '../actions/postAction.js'
 
 const initialPostState = []
@@ -41,6 +43,20 @@ export default function postReducer (state = initialPostState, action) {
       return [
         ...posts
       ]
+    case INCREASE_COMMENT_NUMBER_FOR_POST :
+      {
+        let newState = [...state]
+        newState.filter((p) => (p.id === post.id))
+             .map((p) => { p.commentCount = post.commentCount + 1; })
+        return newState
+      }
+    case DECREASE_COMMENT_NUMBER_FOR_POST :
+      {
+        let newState = [...state]
+        newState.filter((p) => (p.id === post.id))
+             .map((p) => { p.commentCount = post.commentCount - 1; })
+        return newState
+      }
     default :
       return state
   }

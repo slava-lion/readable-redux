@@ -11,15 +11,14 @@ export function addComment (comment) {
   }
 }
 
-export function voteComment ({ id, vote }) {
+export function voteComment (comment) {
   return {
     type : VOTE_COMMENT,
-    id,
-    vote
+    comment
   }
 }
 
-export function editComment ({ id, timestamp = Date.now(), body }) {
+export function editComment (id, timestamp = Date.now(), body) {
   return {
     type : EDIT_COMMENT,
     timestamp,

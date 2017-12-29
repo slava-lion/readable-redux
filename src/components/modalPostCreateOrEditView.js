@@ -71,7 +71,7 @@ class ModalPostCreateOrEditView extends React.Component {
             <div style={{width: '90%', padding: '10px', margin: '5px', outline: 'none',}}>
               choose category <select ref={(select) => this.catSelect = select}>
               {(typeof this.props.categoryTree !== 'undefined') &&
-                (this.props.categoryTree === []) &&
+                Array.isArray(this.props.categoryTree) &&
                 this.props.categoryTree.map((cat) => (
                 <option value={cat.path} key={cat.path}>{cat.name}</option>
               ))}

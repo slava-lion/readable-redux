@@ -17,8 +17,11 @@ export default function commentReducer (state = initialCommentState, action) {
         ...state, comment
       ]
     case VOTE_COMMENT :
-      return {
-        state
+      {
+        let newState = [...state]
+        newState.filter((c) => (c.id === comment.id))
+             .map((c) => {c.voteScore = comment.voteScore; })
+        return newState
       }
     case EDIT_COMMENT :
       {
@@ -32,10 +35,15 @@ export default function commentReducer (state = initialCommentState, action) {
         ...state
       ].filter((c) => (c.id !== id))
     case GET_COMMENT_FOR_POST :
-      return [
-        ...state,
-        ...comments
-      ]
+      {
+        let newState = [...state]
+        comments.forEach(item =>  {
+          if (newState.filter((c) => (c.id === item.id)).length === 0) {
+            newState.push(item)
+          }
+        })
+        return newState
+      }
     default :
       return state
   }

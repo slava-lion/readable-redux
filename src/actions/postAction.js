@@ -4,6 +4,9 @@ export const EDIT_POST = 'EDIT_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const UPDATE_POST_LIST = 'UPDATE_POST_LIST'
 
+export const INCREASE_COMMENT_NUMBER_FOR_POST = 'INCREASE_COMMENT_NUMBER_FOR_POST'
+export const DECREASE_COMMENT_NUMBER_FOR_POST = 'DECREASE_COMMENT_NUMBER_FOR_POST'
+
 export function addPost (post) {
   return {
     type : ADD_POST,
@@ -38,5 +41,19 @@ export function udpatePostsList ({ posts }) {
   return {
     type : UPDATE_POST_LIST,
     posts
+  }
+}
+
+export function increaseCommentNumberForPost (post) {
+  return {
+    type : INCREASE_COMMENT_NUMBER_FOR_POST,
+    post
+  }
+}
+
+export function decreaseCommentNumberForPost (post) {
+  return {
+    type : DECREASE_COMMENT_NUMBER_FOR_POST,
+    post
   }
 }

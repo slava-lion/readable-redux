@@ -111,7 +111,8 @@ a.category-link:after{
 .commentsDetails{
   display: inline-block;
   float: inherit;
-  width: 30px;
+  width: 70px;
+  font-size: 15px;
   text-align: center;
 }
 .comment{
