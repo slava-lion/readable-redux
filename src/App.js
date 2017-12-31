@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link, Route, withRouter } from 'react-router-dom'
-import logo from './logo.svg';
 import './App.css';
 import * as API from './utils/api.js'
-import { timeConverter } from './utils/helpers.js'
 import Modal from 'react-modal'
 
-import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up'
-import FaThumbsODown from 'react-icons/lib/fa/thumbs-o-down'
-import FaClose from 'react-icons/lib/fa/close'
-import FaCommentingO from 'react-icons/lib/fa/commenting-o'
-import FaCommenting from 'react-icons/lib/fa/commenting'
-import FaEdit from 'react-icons/lib/fa/edit'
 import FaPlus from 'react-icons/lib/fa/plus'
 import FaSort from 'react-icons/lib/fa/sort'
 
@@ -26,7 +18,6 @@ class App extends Component {
   state ={
     category_populated: false,
     post_populated: false,
-    categoryTree : [],
     posts : [],
     editOrCreatePostOpen: false,
     postForModal: null,
@@ -45,13 +36,12 @@ class App extends Component {
   fetchStartCategories() {
     API.getAllCategories().then( (categoryTree) => {
         const tree = []
-        categoryTree.map( category =>
+        categoryTree.forEach( category =>
           { tree.push(category) }
         )
         this.props.udpateCategoryList({categoryList: tree})
         this.setState(() => ({
-          category_populated : true,
-          categoryTree: tree
+          category_populated : true
         }))
       }
     )
@@ -120,17 +110,11 @@ class App extends Component {
     // console.log("API test");
     console.error('2');
     console.error(Object.keys(this.props.categoryTree));
-    // var catTree = this.props.categoryTree;
     console.error('3');
     console.error((this.state));
-    // const categoryTree = API.getAllCategories();
-    // console.log(categoryTree);
-//    API.getAllCategories().then( (categoryTree) => {
-//      this.setState({categoryTree})
-//    })
-    let date = new Date();
+
     const sortOrderState = this.state.sortOrder
-    const { editOrCreatePostOpen, postForModal } = this.state
+    const { editOrCreatePostOpen } = this.state
 
     return (
       <div className="App">
@@ -142,7 +126,7 @@ class App extends Component {
 
             <hr/>
 
-            {this.state.categoryTree.map((cat) => (
+            {this.props.categoryTree.map((cat) => (
               <div key={cat.path + '_div'} className="category-link-wrapper">
                 <Link key={cat.path + '_href'} className="category-link" to={"/cat/" + cat.path}>{cat.name}</Link>
               </div>
@@ -206,8 +190,8 @@ class App extends Component {
                   </select>
                 </div>
               </div>
-              {this.props.posts.filter((post) => (post.category === props.match.params.path)).
-                                sort(function(a, b) {
+              {this.props.posts.filter((post) => (post.category === props.match.params.path))
+                               .sort(function(a, b) {
                                   switch (sortOrderState) {
                                     case 'default' :
                                       return a.timestamp - b.timestamp
@@ -246,7 +230,7 @@ class App extends Component {
               <div className='postForm'>
                 <div style={{width: '90%', padding: '10px', margin: '5px', outline: 'none',}}>
                   choose category <select ref={(select) => this.catSelect = select}>
-                  {this.state.categoryTree.map((cat) => (
+                  {this.props.categoryTree.map((cat) => (
                     <option value={cat.path} key={cat.path}>{cat.name}</option>
                   ))}
                 </select>

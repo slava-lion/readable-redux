@@ -1,18 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { timeConverter } from '../utils/helpers.js'
 
-import * as API from '../utils/api.js'
-
 import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up'
-import FaThumbsODown from 'react-icons/lib/fa/thumbs-o-down'
-import FaClose from 'react-icons/lib/fa/close'
 import FaCommentingO from 'react-icons/lib/fa/commenting-o'
-import FaCommenting from 'react-icons/lib/fa/commenting'
-import FaEdit from 'react-icons/lib/fa/edit'
-import FaPlus from 'react-icons/lib/fa/plus'
-import FaSort from 'react-icons/lib/fa/sort'
 
 import { updateCommentsForPost } from '../actions/commentsAction.js'
 

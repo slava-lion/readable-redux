@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import { timeConverter } from '../utils/helpers.js'
@@ -11,8 +11,6 @@ import FaClose from 'react-icons/lib/fa/close'
 import FaCommentingO from 'react-icons/lib/fa/commenting-o'
 import FaCommenting from 'react-icons/lib/fa/commenting'
 import FaEdit from 'react-icons/lib/fa/edit'
-import FaPlus from 'react-icons/lib/fa/plus'
-import FaSort from 'react-icons/lib/fa/sort'
 
 import { updateCommentsForPost, addComment, deleteComment, editComment, voteComment } from '../actions/commentsAction.js'
 import { votePost, deletePost, increaseCommentNumberForPost, decreaseCommentNumberForPost } from '../actions/postAction.js'
@@ -69,8 +67,8 @@ class DetailedPostPage extends React.Component {
   voteComment = (comment, voteType) => {
     API.voteComment(comment.id, voteType).then( (comment) => {
       this.props.voteComment(comment)
-      let comments = this.state.comments
-/*      comments.filter((c) => (c.id === comment.id)).map((c) => {
+/*       let comments = this.state.comments
+     comments.filter((c) => (c.id === comment.id)).map((c) => {
         if(voteType === 'downVote') {
           c.voteScore = c.voteScore - 1
         }
@@ -133,7 +131,7 @@ class DetailedPostPage extends React.Component {
     API.editComment(newComment).then((comment) => {
       this.props.editComment(newComment.id, newComment.timestamp, newComment.body)
       this.setState(() => (
-        { comments: [...this.props.comments].map((c) => {
+        { comments: [...this.props.comments].forEach((c) => {
             if (c.id === comment.id) {
               c.timestamp = comment.timestamp;
               c.body = comment.body;

@@ -3,16 +3,16 @@ import {
   UPDATE_CATEGORY_LIST,
 } from '../actions/categoryAction.js'
 
-const initialCategoryState = {}
+const initialCategoryState = []
 
 export default function categoryReducer (state = initialCategoryState, action) {
-  const { path , categoryList } = action
+  const { categoryList } = action
 
   switch (action.type) {
     case SELECT_CATEGORY :
-      return {
+      return [
         state
-      }
+      ]
     case UPDATE_CATEGORY_LIST :
       return [
         ...categoryList

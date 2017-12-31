@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Modal from 'react-modal'
 import { connect } from 'react-redux'
 import * as API from '../utils/api.js'
@@ -42,7 +42,6 @@ class ModalPostCreateOrEditView extends React.Component {
     let id= this.props.post.id
     let title = this.titleInput.value
     let body = this.postBodyTextarea.value
-    let editedPost = this.props.post
     API.updatePost(id, title, body).then(() => {
       this.props.editPost(id, title, body);
     })

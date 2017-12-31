@@ -9,7 +9,7 @@ import {
 const initialCommentState = []
 
 export default function commentReducer (state = initialCommentState, action) {
-  const { id, title, body, author, timestamp, parentId, vote, comment, comments } = action
+  const { id, body, timestamp, comment, comments } = action
 
   switch (action.type) {
     case ADD_COMMENT :
@@ -20,14 +20,14 @@ export default function commentReducer (state = initialCommentState, action) {
       {
         let newState = [...state]
         newState.filter((c) => (c.id === comment.id))
-             .map((c) => {c.voteScore = comment.voteScore; })
+                .forEach((c) => {c.voteScore = comment.voteScore; })
         return newState
       }
     case EDIT_COMMENT :
       {
         let newState = [...state]
         newState.filter((c) => (c.id === id))
-                .map((c) => { c.timestamp = timestamp; c.body = body; })
+                .forEach((c) => { c.timestamp = timestamp; c.body = body; })
         return newState
       }
     case DELETE_COMMENT :
