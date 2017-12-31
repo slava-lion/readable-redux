@@ -12,7 +12,7 @@ import FaCommentingO from 'react-icons/lib/fa/commenting-o'
 import FaCommenting from 'react-icons/lib/fa/commenting'
 import FaEdit from 'react-icons/lib/fa/edit'
 
-import { updateCommentsForPost, addComment, deleteComment, editComment, voteComment } from '../actions/commentsAction.js'
+import { updateCommentsForPost, addComment, deleteComment, deleteCommentsForPost, editComment, voteComment } from '../actions/commentsAction.js'
 import { votePost, deletePost, increaseCommentNumberForPost, decreaseCommentNumberForPost } from '../actions/postAction.js'
 import ModalPostCreateOrEditView from './modalPostCreateOrEditView.js'
 
@@ -20,7 +20,6 @@ class DetailedPostPage extends React.Component {
 
   state = {
     post : null,
-    comments : [],
     showComments : true,
     isOpenEditView : false,
     edittedComment : null,
@@ -35,10 +34,10 @@ class DetailedPostPage extends React.Component {
   }
 
   setPostIdAndGetComments = (post) => {
-    if(typeof post !== "undefined" && (this.state.post === null || this.state.post.id !== post.id)) {
+    if(typeof post !== "undefined" && post !== null &&
+            (this.state.post === null || this.state.post.id !== post.id)) {
       this.setState(() => ({
-        post: post,
-        comments: []
+        post: post
       }))
       this.getComments(post.id)
     }
@@ -46,7 +45,6 @@ class DetailedPostPage extends React.Component {
 
   getComments = (postId) => {
     API.getAllCommentsByPostId(postId).then( (comments) => {
-      this.setState(() => ({ comments: comments }));
       this.props.updateCommentsForPost(comments);
     })
   }
@@ -83,6 +81,7 @@ class DetailedPostPage extends React.Component {
   removePost = (id) => {
     API.removePost(id).then( (post) => {
       this.props.deletePost(post)
+      this.props.deleteCommentsForPost(post)
       this.props.history.push('/');
     })
   }
@@ -105,7 +104,6 @@ class DetailedPostPage extends React.Component {
     API.addComment(newComment).then((comment) => {
       this.props.addComment(comment)
       this.props.increaseCommentNumberForPost(this.state.post)
-      this.setState(() => ({ comments: [...this.state.comments, comment] }))
       this.newCommentPostBodyTextarea.value = ''
       this.newCommentAuthorInput.value = ''
     })
@@ -115,7 +113,6 @@ class DetailedPostPage extends React.Component {
     API.deleteComment(id).then((comment) => {
       this.props.deleteComment(id)
       this.props.decreaseCommentNumberForPost(this.state.post)
-      this.setState(() => ({ comments: [...this.props.comments].filter((c) => (c.id !== id)) }))
     })
   }
 
@@ -130,15 +127,7 @@ class DetailedPostPage extends React.Component {
 
     API.editComment(newComment).then((comment) => {
       this.props.editComment(newComment.id, newComment.timestamp, newComment.body)
-      this.setState(() => (
-        { comments: [...this.props.comments].forEach((c) => {
-            if (c.id === comment.id) {
-              c.timestamp = comment.timestamp;
-              c.body = comment.body;
-            }
-          }),
-          edittedComment: null
-        }))
+      this.setState(() => ({ edittedComment: null }))
     })
   }
 
@@ -147,21 +136,21 @@ class DetailedPostPage extends React.Component {
   }
 
   componentWillMount() {
-      const {match} = this.props
-      const post = this.props.posts.find((p) => (p.id === match.params.id))
-
-      this.setPostIdAndGetComments(post)
-    }
+    this.setPostIdAndGetComments(this.props.post)
+    /*const post = this.props.post
+    if (typeof post !== 'undefined' || post !== null) {
+      this.getComments(this.props.post.id)
+    }*/
+  }
 
   componentWillReceiveProps(nextProps) {
-    const post = nextProps.posts.find((p) => (p.id === nextProps.match.params.id))
-    this.setPostIdAndGetComments(post)
+    this.setPostIdAndGetComments(nextProps.post)
   }
 
   render() {
-    // console.log(this.props)
-    const post = this.state.post
-    if (post === null) {
+    //console.log(this.props)
+    const post = this.props.post
+    if (typeof post === 'undefined' || post === null) {
       return (
         <div>post with such id was not found</div>
       )
@@ -205,7 +194,7 @@ class DetailedPostPage extends React.Component {
               {this.state.showComments && (
                 <div className="detailedComments">
                   <div>Comments:</div>
-                  {this.state.comments.length > 0 && this.state.comments.map((comment) => (
+                  {this.props.comments.length > 0 && this.props.comments.map((comment) => (
                     <div key={comment.id} className="comment">
                         {(this.state.edittedComment === null ||
                           this.state.edittedComment.id !== comment.id) && (
@@ -276,7 +265,7 @@ class DetailedPostPage extends React.Component {
           <ModalPostCreateOrEditView
               isOpen={this.state.isOpenEditView}
               onCloseFunction={this.closePostModal}
-              post={this.state.post} />
+              post={post} />
         </div>
       )
     }
@@ -290,6 +279,7 @@ const mapDispatchToProps = (dispatch) => {
      deletePost: (data) => dispatch(deletePost(data)),
      addComment: (data) => dispatch(addComment(data)),
      deleteComment: (data) => dispatch(deleteComment(data)),
+     deleteCommentsForPost: (data) => dispatch(deleteCommentsForPost(data)),
      editComment: (id, timestamp, body) => dispatch(editComment(id, timestamp, body)),
      increaseCommentNumberForPost: (post) => dispatch(increaseCommentNumberForPost(post)),
      decreaseCommentNumberForPost: (post) => dispatch(decreaseCommentNumberForPost(post)),
@@ -297,11 +287,21 @@ const mapDispatchToProps = (dispatch) => {
    };
 };
 
-const mapStateToProps = (state) => {
-   return {
-     posts: state.posts,
-     comments: state.comments,
-   };
-};
+const mapStateToProps = (state, ownProps) => {
+  let post = state.posts.find((p) => (p.id === ownProps.match.params.id))
+  // this check was added for deleting post action,
+  // when before redirect from router we get empty (not founded post)
+  if(typeof post !== "undefined" && post !== null) {
+    return {
+      post: post,
+      comments: state.comments.filter((c) => (c.parentId === post.id)),
+    }
+  } else {
+    return {
+      post: null,
+      comments: [],
+    }
+  }
+}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailedPostPage));

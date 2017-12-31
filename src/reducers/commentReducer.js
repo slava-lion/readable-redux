@@ -3,13 +3,14 @@ import {
   VOTE_COMMENT,
   EDIT_COMMENT,
   DELETE_COMMENT,
+  DELETE_COMMENTS_FOR_POST,
   GET_COMMENT_FOR_POST
 } from '../actions/commentsAction.js'
 
 const initialCommentState = []
 
 export default function commentReducer (state = initialCommentState, action) {
-  const { id, body, timestamp, comment, comments } = action
+  const { id, body, timestamp, comment, comments, post } = action
 
   switch (action.type) {
     case ADD_COMMENT :
@@ -34,6 +35,10 @@ export default function commentReducer (state = initialCommentState, action) {
       return [
         ...state
       ].filter((c) => (c.id !== id))
+    case DELETE_COMMENTS_FOR_POST:
+      return [
+        ...state
+      ].filter((c) => (c.parentId !== post.id))
     case GET_COMMENT_FOR_POST :
       {
         let newState = [...state]

@@ -10,10 +10,6 @@ import { updateCommentsForPost } from '../actions/commentsAction.js'
 
 class PostInList extends React.Component {
 
-  state = {
-    comments : []
-  }
-
   render() {
     const { post } = this.props
 

@@ -3,6 +3,7 @@ export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const GET_COMMENT_FOR_POST = 'GET_COMMENT_FOR_POST'
+export const DELETE_COMMENTS_FOR_POST = 'DELETE_COMMENTS_FOR_POST'
 
 export function addComment (comment) {
   return {
@@ -30,6 +31,13 @@ export function deleteComment (id) {
   return {
     type : DELETE_COMMENT,
     id
+  }
+}
+
+export function deleteCommentsForPost (post) {
+  return {
+    type : DELETE_COMMENTS_FOR_POST,
+    post
   }
 }
 
