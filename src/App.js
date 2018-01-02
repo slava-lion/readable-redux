@@ -129,7 +129,7 @@ class App extends Component {
 
             {this.props.categoryTree.map((cat) => (
               <div key={cat.path + '_div'} className="category-link-wrapper">
-                <Link key={cat.path + '_href'} className="category-link" to={"/cat/" + cat.path}>{cat.name}</Link>
+                <Link key={cat.path + '_href'} className="category-link" to={"/" + cat.path}>{cat.name}</Link>
               </div>
             ))}
 
@@ -173,9 +173,9 @@ class App extends Component {
               ))}
             </div>
           )}/>
-          <Route path='/cat/:path' render={ props => (
+          <Route exact path='/:catId' render={ props => (
             <div id="posts">
-              Posts for category {props.match.params.path}<br/>
+              Posts for category {props.match.params.catId}<br/>
               <div className="categoryHeader">
                 <div className="addNewPostdiv" onClick={() => this.openModalPost()}>
                   <FaPlus size={25} /> create new post
@@ -191,7 +191,7 @@ class App extends Component {
                   </select>
                 </div>
               </div>
-              {this.props.posts.filter((post) => (post.category === props.match.params.path))
+              {this.props.posts.filter((post) => (post.category === props.match.params.catId))
                                .sort(function(a, b) {
                                   switch (sortOrderState) {
                                     case 'default' :
@@ -213,7 +213,7 @@ class App extends Component {
               ))}
             </div>
           )} />
-          <Route path='/post/:id' render={ props => (
+          <Route path='/:catId/:id' render={ props => (
             <DetailedPostPage {...props} />
           )} />
 

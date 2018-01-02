@@ -84,7 +84,7 @@ class DetailedPostPage extends React.Component {
         <div id="posts">
           <div key={post.id} className="postInListDiv">
             <div className="postTitle">
-              <Link to={"/post/" + post.id}>{post.title}</Link>
+              <Link to={"/" + post.category + "/" + post.id}>{post.title}</Link>
               <span style={{float: 'right'}}>
                 <FaEdit onClick={() => this.editPost(post)} size={25}/>
                 <FaClose onClick={() => this.removePost(post.id)} size={25}/>
