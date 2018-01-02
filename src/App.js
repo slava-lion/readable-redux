@@ -11,8 +11,8 @@ import FaSort from 'react-icons/lib/fa/sort'
 import { udpateCategoryList } from './actions/categoryAction.js'
 import { udpatePostsList, addPost } from './actions/postAction.js'
 
-import PostInList from './components/postInList.js'
 import DetailedPostPage from './components/detailedPostPage.js'
+import PostWithoutComments from './components/postWithoutComments.js'
 
 class App extends Component {
   state ={
@@ -118,10 +118,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Link key={'home'} to={"/"}>home</Link>
+        <div>
+          <Link key={'home'} to={"/"}>home</Link><br/>
+        </div>
         <div id="wrapper">
           <div id="categories">
-
             Categories
 
             <hr/>
@@ -168,7 +169,7 @@ class App extends Component {
                                       }
                                     })
                                   .map((post) => (
-                <PostInList key={post.id} post={post} />
+                <PostWithoutComments key={post.id} post={post} />
               ))}
             </div>
           )}/>
@@ -208,7 +209,7 @@ class App extends Component {
                                     }
                                   })
                                 .map((post) => (
-                <PostInList key={post.id} post={post} />
+                <PostWithoutComments key={post.id} post={post} />
               ))}
             </div>
           )} />
