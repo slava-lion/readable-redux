@@ -8,7 +8,7 @@ import FaThumbsODown from 'react-icons/lib/fa/thumbs-o-down'
 import FaClose from 'react-icons/lib/fa/close'
 import FaEdit from 'react-icons/lib/fa/edit'
 
-import { updateCommentsForPost, addComment, deleteComment, deleteCommentsForPost, editComment, voteComment } from '../actions/commentsAction.js'
+import { updateCommentsForPost, addComment, deleteComment, editComment, voteComment } from '../actions/commentsAction.js'
 import { increaseCommentNumberForPost, decreaseCommentNumberForPost } from '../actions/postAction.js'
 
 class CommentsForPost extends React.Component {
@@ -187,7 +187,6 @@ const mapDispatchToProps = (dispatch) => {
      updateCommentsForPost: (data) => dispatch(updateCommentsForPost(data)),
      addComment: (data) => dispatch(addComment(data)),
      deleteComment: (data) => dispatch(deleteComment(data)),
-     deleteCommentsForPost: (data) => dispatch(deleteCommentsForPost(data)),
      editComment: (id, timestamp, body) => dispatch(editComment(id, timestamp, body)),
      increaseCommentNumberForPost: (post) => dispatch(increaseCommentNumberForPost(post)),
      decreaseCommentNumberForPost: (post) => dispatch(decreaseCommentNumberForPost(post)),

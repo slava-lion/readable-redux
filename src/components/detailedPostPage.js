@@ -12,6 +12,7 @@ import FaCommentingO from 'react-icons/lib/fa/commenting-o'
 import FaCommenting from 'react-icons/lib/fa/commenting'
 import FaEdit from 'react-icons/lib/fa/edit'
 
+import { deleteCommentsForPost } from '../actions/commentsAction.js'
 import { votePost, deletePost } from '../actions/postAction.js'
 import CommentsForPost from './commentsForPost.js'
 import ModalPostCreateOrEditView from './modalPostCreateOrEditView.js'
@@ -131,6 +132,7 @@ const mapDispatchToProps = (dispatch) => {
    return {
      votePost: (data) => dispatch(votePost(data)),
      deletePost: (data) => dispatch(deletePost(data)),
+    deleteCommentsForPost: (data) => dispatch(deleteCommentsForPost(data)),
    };
 };
 
